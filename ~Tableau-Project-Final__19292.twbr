@@ -2125,10 +2125,10 @@
                     <capturedDeltas>
                       <worksheet name='Death distibution till date'>
                         <datasource-dependencies datasource='federated.0ovhm8o17sbflz1g4r41r0p2vpbk'>
-                          <column datatype='integer' name='[Year]' role='dimension' type='quantitative' />
                           <column caption='DateYear' datatype='date' name='[Calculation_2905947703028903936]' role='dimension' type='ordinal'>
                             <calculation class='tableau' formula='makedate([Year],1,1)' />
                           </column>
+                          <column datatype='integer' name='[Year]' role='dimension' type='quantitative' />
                           <column caption='Action (YEAR(DateYear),Entity)' datatype='tuple' hidden='true' name='[Action (YEAR(DateYear),Entity)]' role='dimension' type='nominal' user:auto-column='sheet_link' />
                           <column-instance column='[Calculation_2905947703028903936]' derivation='Year-Trunc' name='[tyr:Calculation_2905947703028903936:ok]' pivot='key' type='ordinal' />
                         </datasource-dependencies>
@@ -2536,7 +2536,7 @@ An analysis of the least common causes of death indicate that government funding
     </window>
     <window class='dashboard' maximized='true' name='Story - Death Cause Analysis'>
       <viewpoints />
-      <active id='5' />
+      <active id='-1' />
       <simple-id uuid='{EC6A1C4A-F462-4D4E-96F1-347AF1D11BA9}' />
     </window>
   </windows>

@@ -9,29 +9,31 @@ This project is a study of global death data using the datasets provided by "Our
 -   Communicating insights with the correct visualizations
 
 ## Process
-In order to try and answer the above questions, the following are the steps that were followed:
+In order to achieve the above goals, the following steps were followed:
 
 1. Referred to [this](https://www.kaggle.com/datasets/ivanchvez/causes-of-death-our-world-in-data/data) page on Kaggle to review and download the "Causes of Death - Our World in Data" dataset.
-2. Did further exploratory data analysis of the files to determine reliability of data. Performed data cleanup where country information was ambiguous for some parts of the dataset (20222703 Causes Of Death Clean Output V2.0.csv). Also, created a new date field in the data set to be able to generate time series data for analysis.
- - [ ] The file had United States and America as country information. These were merged to United States after reviewing the data.
- - [ ] The year column came in as string. Used makedate() function in a calculated field in Tableau to convert it into a proper date column.
-4. Started high level data analysis by plotting visualizations over several Tableau worksheets to study the data and develop inference.
+ - [ ] 20220327 annual-number-of-deaths-by-cause.csv
+ - [ ] 20222703 Causes Of Death Clean Output V2.0.csv
+3. Did further exploratory data analysis of the files to determine reliability of data.
+ - [ ] Performed data cleanup where country information was ambiguous for some parts of the dataset (20222703 Causes Of Death Clean Output V2.0.csv). The file had United States and America as country information. These were merged to United States after reviewing the data.
+ - [ ] The year column came in as string. Used makedate() function in a calculated field in Tableau to convert it into a proper date column to be able to generate time series data for analysis.
+4. Started high level data analysis by plotting visualizations over several Tableau worksheets to study the data and develop inferences.
 5. Each visualization and inference led to the next visualization and resulting inferences. 
 6. As a next step, dashboards were created using the visualizations that were developed.
-7. As a final step a Tableau story was created by utilizing the dashboards created with ample explanations on the inferences made.
+7. As a final step, a Tableau story was created by utilizing the dashboards with corresponding notes on the inferences made.
 
 ## Results
 
-For this analysis, Option 2 was chosen. The dataset chosen was "Causes of Death - Our World in Data". The dataset is available from the Kaggle website: [Cause of Death - Our World In Data](https://www.kaggle.com/datasets/ivanchvez/causes-of-death-our-world-in-data?resource=download).
+Option 2 was chosen for this analysis. The dataset chosen was "V) Causes of Death - Our World in Data". The dataset is available on the Kaggle website: [Cause of Death - Our World In Data](https://www.kaggle.com/datasets/ivanchvez/causes-of-death-our-world-in-data?resource=download).
 
 The following sets of visualizations were created to understand the data trends:
 
 1. High level death data analysis by countries to identify the death counts by country.
-2. Death count trend over the years and forecast. 
+2. Death count trend over the years with forecast. 
 3. Death count analysis by cause and by country.
 4. Study of Percentage contribution of different causes of deaths.
-5. Death cause trend analysis by country and leading causes.
-6. Death cause trend analysis by least impactful causes.
+5. Death cause trend analysis by country and leading causes (Top N) with forecast.
+6. Death cause trend analysis by least impactful (Bottom N) causes with forecast.
 7. Cluster Analysis of death data.
 
 Using the above visualizations, dashboards were created and in turn those dashboards were used to create a data story in Tableau to answer the following questions:
@@ -46,7 +48,7 @@ The following were the data questions prompted by each stage of data analysis.
  6. What story does the data tell us?
  7. Where should governments spend more funds to improve the lifespan of their citizens?
 
-As a conclusion to this project, the Tableau Story was developed to share the inferences and answers to above questions.
+As a conclusion to this project, a Tableau Story was developed to share the inferences and answers to above questions.
 
 ## Challenges 
 1. I initially started off with Option 1, however, at a certain point, the data provided started to present challenges as I could not find specific information I was looking for. I also felt that answering pre-prepared questions curbed the opportunity for me as a data analyst to study data, draw inferences and create my own questions based out of research. So I decided to move on to Option 2.

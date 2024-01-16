@@ -653,6 +653,17 @@
         </objects>
       </_.fcp.ObjectModelEncapsulateLegacy.true...object-graph>
     </datasource>
+    <datasource hasconnection='false' inline='true' name='Parameters' version='18.1'>
+      <aliases enabled='yes' />
+      <column caption='Top N causes' datatype='integer' default-format='N' name='[Parameter 1]' param-domain-type='range' role='measure' type='quantitative' value='3'>
+        <calculation class='tableau' formula='3' />
+        <range max='10' min='1' />
+      </column>
+      <column caption='Bottom N causes' datatype='integer' name='[Parameter 2]' param-domain-type='range' role='measure' type='quantitative' value='3'>
+        <calculation class='tableau' formula='3' />
+        <range max='10' min='1' />
+      </column>
+    </datasource>
     <datasource caption='20222703 Causes Of Death Clean Output V2.0' inline='true' name='federated.0ovhm8o17sbflz1g4r41r0p2vpbk' version='18.1'>
       <connection class='federated'>
         <named-connections>
@@ -1033,12 +1044,28 @@
       </table>
       <simple-id uuid='{BD07E919-1941-40D1-86A5-C95C36F78C24}' />
     </worksheet>
-    <worksheet name='Death count - Bottom 3 causes/country/year'>
+    <worksheet name='Death count - Bottom N causes/country/year'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run>Death Count - Bottom &lt;</run>
+            <run>[Parameters].[Parameter 2]</run>
+            <run>&gt; causes/country/year</run>
+          </formatted-text>
+        </title>
+      </layout-options>
       <table>
         <view>
           <datasources>
             <datasource caption='20222703 Causes Of Death Clean Output V2.0' name='federated.0ovhm8o17sbflz1g4r41r0p2vpbk' />
+            <datasource name='Parameters' />
           </datasources>
+          <datasource-dependencies datasource='Parameters'>
+            <column caption='Bottom N causes' datatype='integer' name='[Parameter 2]' param-domain-type='range' role='measure' type='quantitative' value='3'>
+              <calculation class='tableau' formula='3' />
+              <range max='10' min='1' />
+            </column>
+          </datasource-dependencies>
           <datasource-dependencies datasource='federated.0ovhm8o17sbflz1g4r41r0p2vpbk'>
             <column caption='DateYear' datatype='date' name='[Calculation_2905947703028903936]' role='dimension' type='ordinal'>
               <calculation class='tableau' formula='makedate([Year],1,1)' />
@@ -1053,7 +1080,7 @@
             <column-instance column='[Calculation_2905947703028903936]' derivation='Year-Trunc' name='[tyr:Calculation_2905947703028903936:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
           <filter class='categorical' column='[federated.0ovhm8o17sbflz1g4r41r0p2vpbk].[none:Causes name:nk]'>
-            <groupfilter count='3' end='bottom' function='end' units='records' user:ui-marker='end' user:ui-top-by-field='true'>
+            <groupfilter count='[Parameters].[Parameter 2]' end='bottom' function='end' units='records' user:ui-marker='end' user:ui-top-by-field='true'>
               <groupfilter direction='DESC' expression='SUM([Death Numbers])' function='order' user:ui-marker='order'>
                 <groupfilter function='level-members' level='[none:Causes name:nk]' user:ui-enumeration='all' user:ui-marker='enumerate' />
               </groupfilter>
@@ -1091,12 +1118,28 @@
       </table>
       <simple-id uuid='{D65A5407-09B2-4410-8245-55ADA3C6DFFC}' />
     </worksheet>
-    <worksheet name='Death count - Top 3 cause/country/year'>
+    <worksheet name='Death count - Top N cause/country/year'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run>Death Count - Top &lt;</run>
+            <run>[Parameters].[Parameter 1]</run>
+            <run>&gt; causes/country/year</run>
+          </formatted-text>
+        </title>
+      </layout-options>
       <table>
         <view>
           <datasources>
             <datasource caption='20222703 Causes Of Death Clean Output V2.0' name='federated.0ovhm8o17sbflz1g4r41r0p2vpbk' />
+            <datasource name='Parameters' />
           </datasources>
+          <datasource-dependencies datasource='Parameters'>
+            <column caption='Top N causes' datatype='integer' default-format='N' name='[Parameter 1]' param-domain-type='range' role='measure' type='quantitative' value='3'>
+              <calculation class='tableau' formula='3' />
+              <range max='10' min='1' />
+            </column>
+          </datasource-dependencies>
           <datasource-dependencies datasource='federated.0ovhm8o17sbflz1g4r41r0p2vpbk'>
             <column caption='DateYear' datatype='date' name='[Calculation_2905947703028903936]' role='dimension' type='ordinal'>
               <calculation class='tableau' formula='makedate([Year],1,1)' />
@@ -1113,7 +1156,7 @@
             <column-instance column='[Calculation_2905947703028903936]' derivation='Year-Trunc' name='[tyr:Calculation_2905947703028903936:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
           <filter class='categorical' column='[federated.0ovhm8o17sbflz1g4r41r0p2vpbk].[none:Causes name:nk]'>
-            <groupfilter count='3' end='top' function='end' units='records' user:ui-marker='end' user:ui-top-by-field='true'>
+            <groupfilter count='[Parameters].[Parameter 1]' end='top' function='end' units='records' user:ui-marker='end' user:ui-top-by-field='true'>
               <groupfilter direction='DESC' expression='SUM([Death Numbers])' function='order' user:ui-marker='order'>
                 <groupfilter function='level-members' level='[none:Causes name:nk]' user:ui-enumeration='all' user:ui-marker='enumerate' />
               </groupfilter>
@@ -1228,7 +1271,7 @@
       <layout-options>
         <title>
           <formatted-text>
-            <run bold='true' fontcolor='#4e79a7'>By cause</run>
+            <run bold='true' fontcolor='#4e79a7'>% Contribution of Causes</run>
           </formatted-text>
         </title>
       </layout-options>
@@ -1553,7 +1596,7 @@
             <format attr='margin' value='8' />
           </zone-style>
         </zone>
-        <zone forceUpdate='true' h='7375' id='17' type-v2='text' w='16000' x='83100' y='23375'>
+        <zone forceUpdate='true' h='12875' id='17' type-v2='text' w='16000' x='83100' y='23375'>
           <formatted-text>
             <run bold='true' fontcolor='#e15759'>Select specific year or country above to analyze year or country specific data.</run>
           </formatted-text>
@@ -1569,8 +1612,8 @@
         <devicelayout auto-generated='true' name='Phone'>
           <size maxheight='700' minheight='700' sizing-mode='vscroll' />
           <zones>
-            <zone h='100000' id='23' type-v2='layout-basic' w='100000' x='0' y='0'>
-              <zone h='98000' id='22' param='vert' type-v2='layout-flow' w='98400' x='800' y='1000'>
+            <zone h='100000' id='43' type-v2='layout-basic' w='100000' x='0' y='0'>
+              <zone h='98000' id='42' param='vert' type-v2='layout-flow' w='98400' x='800' y='1000'>
                 <zone h='6500' id='8' mode='checkdropdown' name='Death count by cause - 2' param='[federated.0ovhm8o17sbflz1g4r41r0p2vpbk].[yr:Calculation_2905947703028903936:ok]' type-v2='filter' w='16000' x='83200' y='1000'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -1607,7 +1650,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone forceUpdate='true' h='7375' id='17' type-v2='text' w='16000' x='83100' y='23375'>
+                <zone forceUpdate='true' h='12875' id='17' type-v2='text' w='16000' x='83100' y='23375'>
                   <formatted-text>
                     <run bold='true' fontcolor='#e15759'>Select specific year or country above to analyze year or country specific data.</run>
                   </formatted-text>
@@ -1694,8 +1737,8 @@
         <devicelayout auto-generated='true' name='Phone'>
           <size maxheight='750' minheight='750' sizing-mode='vscroll' />
           <zones>
-            <zone h='100000' id='118' type-v2='layout-basic' w='100000' x='0' y='0'>
-              <zone h='98000' id='117' param='vert' type-v2='layout-flow' w='98400' x='800' y='1000'>
+            <zone h='100000' id='138' type-v2='layout-basic' w='100000' x='0' y='0'>
+              <zone h='98000' id='137' param='vert' type-v2='layout-flow' w='98400' x='800' y='1000'>
                 <zone fixed-size='280' h='49000' id='3' is-fixed='true' name='Death count by year with forecast' w='82400' x='800' y='1000'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -1749,8 +1792,15 @@
       <style />
       <size maxheight='800' maxwidth='1000' minheight='800' minwidth='1000' />
       <datasources>
+        <datasource name='Parameters' />
         <datasource caption='20222703 Causes Of Death Clean Output V2.0' name='federated.0ovhm8o17sbflz1g4r41r0p2vpbk' />
       </datasources>
+      <datasource-dependencies datasource='Parameters'>
+        <column caption='Top N causes' datatype='integer' default-format='N' name='[Parameter 1]' param-domain-type='range' role='measure' type='quantitative' value='3'>
+          <calculation class='tableau' formula='3' />
+          <range max='10' min='1' />
+        </column>
+      </datasource-dependencies>
       <datasource-dependencies datasource='federated.0ovhm8o17sbflz1g4r41r0p2vpbk'>
         <column datatype='string' name='[Causes name]' role='dimension' type='nominal' />
         <column datatype='string' name='[Entity]' role='dimension' semantic-role='[Country].[Name]' type='nominal' />
@@ -1759,49 +1809,51 @@
       </datasource-dependencies>
       <zones>
         <zone h='100000' id='4' type-v2='layout-basic' w='100000' x='0' y='0'>
-          <zone h='98000' id='7' param='horz' type-v2='layout-flow' w='98400' x='800' y='1000'>
-            <zone h='98000' id='5' type-v2='layout-basic' w='82400' x='800' y='1000'>
-              <zone h='45000' id='3' name='Death count - Top 3 cause/country/year' show-title='false' w='82400' x='800' y='5000'>
-                <zone-style>
-                  <format attr='border-color' value='#000000' />
-                  <format attr='border-style' value='none' />
-                  <format attr='border-width' value='0' />
-                  <format attr='margin' value='4' />
-                </zone-style>
-              </zone>
-              <zone h='45000' id='13' name='Death count - Bottom 3 causes/country/year' show-title='false' w='82400' x='800' y='54000'>
-                <zone-style>
-                  <format attr='border-color' value='#000000' />
-                  <format attr='border-style' value='none' />
-                  <format attr='border-width' value='0' />
-                  <format attr='margin' value='4' />
-                </zone-style>
-              </zone>
-              <zone forceUpdate='true' h='4000' id='19' type-v2='text' w='82400' x='800' y='50000'>
-                <formatted-text>
-                  <run bold='true' fontcolor='#4e79a7' fontsize='12'>Causes contributing least</run>
-                </formatted-text>
-                <zone-style>
-                  <format attr='border-color' value='#000000' />
-                  <format attr='border-style' value='none' />
-                  <format attr='border-width' value='0' />
-                  <format attr='margin' value='4' />
-                </zone-style>
-              </zone>
-              <zone forceUpdate='true' h='4000' id='20' type-v2='text' w='82400' x='800' y='1000'>
-                <formatted-text>
-                  <run bold='true' fontcolor='#4e79a7' fontsize='12'>Causes contributing the most</run>
-                </formatted-text>
-                <zone-style>
-                  <format attr='border-color' value='#000000' />
-                  <format attr='border-style' value='none' />
-                  <format attr='border-width' value='0' />
-                  <format attr='margin' value='4' />
-                </zone-style>
+          <zone h='98000' id='125' param='horz' type-v2='layout-flow' w='98400' x='800' y='1000'>
+            <zone h='98000' id='7' param='horz' type-v2='layout-flow' w='82400' x='800' y='1000'>
+              <zone h='98000' id='5' type-v2='layout-basic' w='82400' x='800' y='1000'>
+                <zone forceUpdate='true' h='4000' id='19' type-v2='text' w='82400' x='800' y='50000'>
+                  <formatted-text>
+                    <run bold='true' fontcolor='#4e79a7' fontsize='12'>Causes contributing least</run>
+                  </formatted-text>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                  </zone-style>
+                </zone>
+                <zone forceUpdate='true' h='4000' id='20' type-v2='text' w='82400' x='800' y='1000'>
+                  <formatted-text>
+                    <run bold='true' fontcolor='#4e79a7' fontsize='12'>Causes contributing the most</run>
+                  </formatted-text>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                  </zone-style>
+                </zone>
+                <zone h='45000' id='123' name='Death count - Top N cause/country/year' show-title='false' w='82400' x='800' y='5000'>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                  </zone-style>
+                </zone>
+                <zone h='45000' id='130' name='Death count - Bottom N causes/country/year' show-title='false' w='82400' x='800' y='54000'>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                  </zone-style>
+                </zone>
               </zone>
             </zone>
-            <zone fixed-size='160' h='98000' id='6' is-fixed='true' param='vert' type-v2='layout-flow' w='16000' x='83200' y='1000'>
-              <zone h='13875' id='8' mode='checkdropdown' name='Death count - Top 3 cause/country/year' param='[federated.0ovhm8o17sbflz1g4r41r0p2vpbk].[none:Causes name:nk]' type-v2='filter' w='16000' x='83200' y='1000'>
+            <zone fixed-size='160' h='98000' id='124' is-fixed='true' param='vert' type-v2='layout-flow' w='16000' x='83200' y='1000'>
+              <zone h='9375' id='129' mode='slider' param='[Parameters].[Parameter 1]' type-v2='paramctrl' w='16000' x='83200' y='1000'>
                 <zone-style>
                   <format attr='border-color' value='#000000' />
                   <format attr='border-style' value='none' />
@@ -1809,7 +1861,26 @@
                   <format attr='margin' value='4' />
                 </zone-style>
               </zone>
-              <zone h='13875' id='9' mode='checkdropdown' name='Death count - Top 3 cause/country/year' param='[federated.0ovhm8o17sbflz1g4r41r0p2vpbk].[none:Entity:nk]' type-v2='filter' w='16000' x='83200' y='14875'>
+              <zone h='13875' id='126' mode='checkdropdown' name='Death count - Top N cause/country/year' param='[federated.0ovhm8o17sbflz1g4r41r0p2vpbk].[none:Causes name:nk]' type-v2='filter' w='16000' x='83200' y='10375'>
+                <zone-style>
+                  <format attr='border-color' value='#000000' />
+                  <format attr='border-style' value='none' />
+                  <format attr='border-width' value='0' />
+                  <format attr='margin' value='4' />
+                </zone-style>
+              </zone>
+              <zone h='13875' id='127' mode='checkdropdown' name='Death count - Top N cause/country/year' param='[federated.0ovhm8o17sbflz1g4r41r0p2vpbk].[none:Entity:nk]' type-v2='filter' w='16000' x='83200' y='24250'>
+                <zone-style>
+                  <format attr='border-color' value='#000000' />
+                  <format attr='border-style' value='none' />
+                  <format attr='border-width' value='0' />
+                  <format attr='margin' value='4' />
+                </zone-style>
+              </zone>
+              <zone h='7375' id='139' type-v2='text' w='16000' x='83200' y='38125'>
+                <formatted-text>
+                  <run bold='true' fontcolor='#e15759'>Select Top N, country or cause above to analyze specific data.</run>
+                </formatted-text>
                 <zone-style>
                   <format attr='border-color' value='#000000' />
                   <format attr='border-style' value='none' />
@@ -1829,10 +1900,10 @@
       </zones>
       <devicelayouts>
         <devicelayout auto-generated='true' name='Phone'>
-          <size maxheight='850' minheight='850' sizing-mode='vscroll' />
+          <size maxheight='1000' minheight='1000' sizing-mode='vscroll' />
           <zones>
-            <zone h='100000' id='114' type-v2='layout-basic' w='100000' x='0' y='0'>
-              <zone h='98000' id='113' param='vert' type-v2='layout-flow' w='98400' x='800' y='1000'>
+            <zone h='100000' id='147' type-v2='layout-basic' w='100000' x='0' y='0'>
+              <zone h='98000' id='146' param='vert' type-v2='layout-flow' w='98400' x='800' y='1000'>
                 <zone forceUpdate='true' h='4000' id='20' type-v2='text' w='82400' x='800' y='1000'>
                   <formatted-text>
                     <run bold='true' fontcolor='#4e79a7' fontsize='12'>Causes contributing the most</run>
@@ -1845,7 +1916,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='13875' id='8' mode='checkdropdown' name='Death count - Top 3 cause/country/year' param='[federated.0ovhm8o17sbflz1g4r41r0p2vpbk].[none:Causes name:nk]' type-v2='filter' w='16000' x='83200' y='1000'>
+                <zone h='9375' id='129' mode='slider' param='[Parameters].[Parameter 1]' type-v2='paramctrl' w='16000' x='83200' y='1000'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -1854,7 +1925,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='13875' id='9' mode='checkdropdown' name='Death count - Top 3 cause/country/year' param='[federated.0ovhm8o17sbflz1g4r41r0p2vpbk].[none:Entity:nk]' type-v2='filter' w='16000' x='83200' y='14875'>
+                <zone h='13875' id='126' mode='checkdropdown' name='Death count - Top N cause/country/year' param='[federated.0ovhm8o17sbflz1g4r41r0p2vpbk].[none:Causes name:nk]' type-v2='filter' w='16000' x='83200' y='10375'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -1863,7 +1934,28 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='280' h='45000' id='3' is-fixed='true' name='Death count - Top 3 cause/country/year' show-title='false' w='82400' x='800' y='5000'>
+                <zone h='13875' id='127' mode='checkdropdown' name='Death count - Top N cause/country/year' param='[federated.0ovhm8o17sbflz1g4r41r0p2vpbk].[none:Entity:nk]' type-v2='filter' w='16000' x='83200' y='24250'>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+                <zone fixed-size='280' h='45000' id='123' is-fixed='true' name='Death count - Top N cause/country/year' show-title='false' w='82400' x='800' y='5000'>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+                <zone h='7375' id='139' type-v2='text' w='16000' x='83200' y='38125'>
+                  <formatted-text>
+                    <run bold='true' fontcolor='#e15759'>Select Top N, country or cause above to analyze specific data.</run>
+                  </formatted-text>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -1884,7 +1976,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='280' h='45000' id='13' is-fixed='true' name='Death count - Bottom 3 causes/country/year' show-title='false' w='82400' x='800' y='54000'>
+                <zone fixed-size='280' h='45000' id='130' is-fixed='true' name='Death count - Bottom N causes/country/year' show-title='false' w='82400' x='800' y='54000'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -1989,8 +2081,8 @@
         <devicelayout auto-generated='true' name='Phone'>
           <size maxheight='850' minheight='850' sizing-mode='vscroll' />
           <zones>
-            <zone h='100000' id='128' type-v2='layout-basic' w='100000' x='0' y='0'>
-              <zone h='98000' id='127' param='vert' type-v2='layout-flow' w='98400' x='800' y='1000'>
+            <zone h='100000' id='148' type-v2='layout-basic' w='100000' x='0' y='0'>
+              <zone h='98000' id='147' param='vert' type-v2='layout-flow' w='98400' x='800' y='1000'>
                 <zone fixed-size='280' h='49000' id='3' is-fixed='true' name='Death distibution till date' w='82400' x='800' y='1000'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -2086,8 +2178,8 @@
         <devicelayout auto-generated='true' name='Phone'>
           <size maxheight='700' minheight='700' sizing-mode='vscroll' />
           <zones>
-            <zone h='100000' id='42' type-v2='layout-basic' w='100000' x='0' y='0'>
-              <zone h='98000' id='41' param='vert' type-v2='layout-flow' w='98400' x='800' y='1000'>
+            <zone h='100000' id='62' type-v2='layout-basic' w='100000' x='0' y='0'>
+              <zone h='98000' id='61' param='vert' type-v2='layout-flow' w='98400' x='800' y='1000'>
                 <zone fixed-size='280' forceUpdate='true' h='98000' id='3' is-fixed='true' is-scaled='1' param='C:/Users/aysha/Downloads/healthier-world-word-cloud-260nw-1262033845.jpg' type-v2='bitmap' w='98400' x='800' y='1000'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -2118,17 +2210,17 @@
           <zone h='98340' id='1' param='vert' removable='false' type-v2='layout-flow' w='98426' x='787' y='830'>
             <zone h='10477' id='4' is-fixed='true' paired-zone-id='5' removable='false' type-v2='flipboard-nav' w='98426' x='787' y='830' />
             <zone h='87863' id='5' paired-zone-id='4' removable='false' type-v2='flipboard' w='98426' x='787' y='11307'>
-              <flipboard active-id='2' nav-type='caption' show-nav-arrows='true'>
+              <flipboard active-id='6' nav-type='caption' show-nav-arrows='true'>
                 <story-points>
                   <story-point caption='World-wide Death Data Analysis' captured-sheet='' id='1' />
                   <story-point caption='Death statistics - 1990 till 2019' captured-sheet='DB - Death - high level analysis' id='2'>
                     <capturedDeltas>
                       <worksheet name='Death distibution till date'>
                         <datasource-dependencies datasource='federated.0ovhm8o17sbflz1g4r41r0p2vpbk'>
+                          <column datatype='integer' name='[Year]' role='dimension' type='quantitative' />
                           <column caption='DateYear' datatype='date' name='[Calculation_2905947703028903936]' role='dimension' type='ordinal'>
                             <calculation class='tableau' formula='makedate([Year],1,1)' />
                           </column>
-                          <column datatype='integer' name='[Year]' role='dimension' type='quantitative' />
                           <column caption='Action (YEAR(DateYear),Entity)' datatype='tuple' hidden='true' name='[Action (YEAR(DateYear),Entity)]' role='dimension' type='nominal' user:auto-column='sheet_link' />
                           <column-instance column='[Calculation_2905947703028903936]' derivation='Year-Trunc' name='[tyr:Calculation_2905947703028903936:ok]' pivot='key' type='ordinal' />
                         </datasource-dependencies>
@@ -2202,7 +2294,7 @@
             <run bold='true' fontcolor='#4e79a7' fontsize='24'>Worldwide Death Cause Analysis - An Analytical Viewpoint</run>
           </formatted-text>
         </zone>
-        <zone flipboard-zone-id='5' forceUpdate='true' h='43568' id='7' story-point-id='2' type-v2='text' w='17224' x='82579' y='47614'>
+        <zone flipboard-zone-id='5' forceUpdate='true' h='43568' hidden='true' id='7' story-point-id='2' type-v2='text' w='17224' x='82579' y='47614'>
           <formatted-text>
             <run bold='true' fontcolor='#4e79a7'>Countries with most deaths</run>
             <run>Æ&#10;</run>
@@ -2222,11 +2314,11 @@ The rate of death continues to increase with time. The following are the main ca
 3. Chronic Respiratory diseases</run>
           </formatted-text>
         </zone>
-        <zone flipboard-zone-id='5' forceUpdate='true' h='57780' hidden='true' id='9' story-point-id='4' type-v2='text' w='17224' x='82776' y='35270'>
+        <zone flipboard-zone-id='5' forceUpdate='true' h='46784' hidden='true' id='9' story-point-id='4' type-v2='text' w='17224' x='82776' y='49378'>
           <formatted-text>
             <run bold='true' fontalignment='0' fontcolor='#4e79a7'>Death causes - A study of trends</run>
             <run fontalignment='0'>Æ&#10;&#10;</run>
-            <run fontalignment='0' fontcolor='#000000' fontsize='12'>China has been able to fare better in terms of controlling chronic respiratory diseases however it continues to rise in others.</run>
+            <run fontalignment='0' fontcolor='#000000' fontsize='12'>China has been able to fare better in terms of controlling chronic respiratory diseases however it continues to rise in other countries.</run>
             <run fontalignment='0'>Æ&#10;&#10;</run>
             <run fontalignment='0' fontcolor='#000000' fontsize='12'>Cardiovascular deaths continue to rise steadily in all of the countries with highest deaths except Russia where a downward trend is noticed. </run>
           </formatted-text>
@@ -2400,7 +2492,7 @@ An analysis of the least common causes of death indicate that government funding
       </cards>
       <simple-id uuid='{4B1EDC8C-EF0E-4DB2-A34B-5A5E42186447}' />
     </window>
-    <window class='worksheet' name='Death count - Top 3 cause/country/year'>
+    <window class='worksheet' name='Death count - Top N cause/country/year'>
       <cards>
         <edge name='left'>
           <strip size='160'>
@@ -2422,15 +2514,16 @@ An analysis of the least common causes of death indicate that government funding
         </edge>
         <edge name='right'>
           <strip size='160'>
-            <card param='[federated.0ovhm8o17sbflz1g4r41r0p2vpbk].[none:Causes name:nk]' type='filter' />
-            <card param='[federated.0ovhm8o17sbflz1g4r41r0p2vpbk].[none:Entity:nk]' type='filter' />
+            <card mode='slider' param='[Parameters].[Parameter 1]' type='parameter' />
+            <card mode='checkdropdown' param='[federated.0ovhm8o17sbflz1g4r41r0p2vpbk].[none:Causes name:nk]' type='filter' />
+            <card mode='checkdropdown' param='[federated.0ovhm8o17sbflz1g4r41r0p2vpbk].[none:Entity:nk]' type='filter' />
             <card pane-specification-id='0' param='[federated.0ovhm8o17sbflz1g4r41r0p2vpbk].[none:Entity:nk]&#10;[federated.0ovhm8o17sbflz1g4r41r0p2vpbk].[attr:Forecast Indicator:nk]' type='color' />
           </strip>
         </edge>
       </cards>
       <simple-id uuid='{700E6026-0531-4A3A-BC93-8BE2AD1DBEBD}' />
     </window>
-    <window class='worksheet' name='Death count - Bottom 3 causes/country/year'>
+    <window class='worksheet' name='Death count - Bottom N causes/country/year'>
       <cards>
         <edge name='left'>
           <strip size='160'>
@@ -2452,8 +2545,9 @@ An analysis of the least common causes of death indicate that government funding
         </edge>
         <edge name='right'>
           <strip size='160'>
-            <card param='[federated.0ovhm8o17sbflz1g4r41r0p2vpbk].[none:Causes name:nk]' type='filter' />
-            <card param='[federated.0ovhm8o17sbflz1g4r41r0p2vpbk].[none:Entity:nk]' type='filter' />
+            <card mode='slider' param='[Parameters].[Parameter 2]' type='parameter' />
+            <card mode='checkdropdown' param='[federated.0ovhm8o17sbflz1g4r41r0p2vpbk].[none:Causes name:nk]' type='filter' />
+            <card mode='checkdropdown' param='[federated.0ovhm8o17sbflz1g4r41r0p2vpbk].[none:Entity:nk]' type='filter' />
             <card pane-specification-id='0' param='[federated.0ovhm8o17sbflz1g4r41r0p2vpbk].[none:Entity:nk]' type='color' />
           </strip>
         </edge>
@@ -2514,19 +2608,19 @@ An analysis of the least common causes of death indicate that government funding
           <zoom type='fit-height' />
         </viewpoint>
       </viewpoints>
-      <active id='6' />
+      <active id='-1' />
       <simple-id uuid='{A99BD2CD-A179-4AC5-BB39-A581DAC602B4}' />
     </window>
     <window class='dashboard' name='DB - Causes comparison'>
       <viewpoints>
-        <viewpoint name='Death count - Bottom 3 causes/country/year'>
+        <viewpoint name='Death count - Bottom N causes/country/year'>
           <zoom type='entire-view' />
         </viewpoint>
-        <viewpoint name='Death count - Top 3 cause/country/year'>
+        <viewpoint name='Death count - Top N cause/country/year'>
           <zoom type='entire-view' />
         </viewpoint>
       </viewpoints>
-      <active id='-1' />
+      <active id='124' />
       <simple-id uuid='{86F8C4D2-C311-4E00-91E2-761B3A38671F}' />
     </window>
     <window class='dashboard' name='Healthier World'>
